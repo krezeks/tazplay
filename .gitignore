@@ -1,0 +1,5 @@
+build-manual/
+.gradle/
+local.properties
+*.apk
+*.muse-github-snapshot-sync.json*

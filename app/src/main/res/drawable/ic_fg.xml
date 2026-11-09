@@ -1,0 +1,21 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- badan gamepad -->
+    <path
+        android:fillColor="#FF8C42"
+        android:pathData="M20,38 L88,38 A10,10 0 0 1 98,48 L98,64 A11,11 0 0 1 79,71 L68,61 L40,61 L29,71 A11,11 0 0 1 10,64 L10,48 A10,10 0 0 1 20,38 Z" />
+    <!-- d-pad -->
+    <path
+        android:fillColor="#232946"
+        android:pathData="M27,45 L33,45 L33,50 L38,50 L38,56 L33,56 L33,61 L27,61 L27,56 L22,56 L22,50 L27,50 Z" />
+    <!-- tombol kanan -->
+    <path
+        android:fillColor="#232946"
+        android:pathData="M76,44 a4.2,4.2 0 1,0 0.1,0 Z" />
+    <path
+        android:fillColor="#232946"
+        android:pathData="M86,53 a4.2,4.2 0 1,0 0.1,0 Z" />
+</vector>
