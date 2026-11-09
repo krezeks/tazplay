@@ -6,15 +6,15 @@ Inti app adalah **frontend libretro generik** tulisan sendiri (C/JNI + Java): co
 
 > **Tidak ada ROM dan tidak ada BIOS di repo ini.** Semua game & BIOS berasal dari dump milik pengguna sendiri.
 
-## Status (v0.4.1)
+## Status (v0.4.2)
 
-- 📚 **Library** — scan folder rekursif, klasifikasi PS1/PS2/PSP/N64/NDS dari nama folder + ekstensi, chip filter, override sistem per game (tekan-tahan).
+- 📚 **Library** — scan folder rekursif, klasifikasi PS1/PS2/PSP/N64/NDS/NES dari nama folder + ekstensi, chip filter, override sistem per game (tekan-tahan). ROM NES `.nes`, `.unf`, `.unif`, dan `.fds` dikenali otomatis.
 - 🕹️ **PS1 main di dalam app** — core [PCSX-ReARMed](https://github.com/libretro/pcsx_rearmed) (libretro) dicompile dari source untuk ARM64. Terverifikasi jalan di Xiaomi 15T Pro.
 - 🎛️ **Kontrol** — overlay sentuh (D-pad, △○✕□, L1/R1, Select/Start) + gamepad/keyboard fisik, termasuk stik analog DualShock.
 - ⚙️ **Setelan player** — Video (rasio Asli/Stretch/Zoom, filter Tajam/Halus, orientasi, overlay FPS), Audio (on/off, latensi rendah/stabil), Gamepad (jenis stik, deadzone), Kontrol Sentuh (ukuran tombol, getar).
 - 💾 **Save state** 3 slot per game (terpisah dari kartu memori yang auto-save).
 - 🧬 **BIOS** — mode HLE bawaan core, atau file BIOS asli dari dump pengguna (dipilih sekali lewat file picker).
-- Sistem lain (PS2/PSP/N64/NDS) sementara dibuka lewat emulator eksternal yang terpasang. **PS2 tetap eksternal, permanen** — tidak ada core libretro PS2 yang layak di Android.
+- Sistem selain PS1 (PS2/PSP/N64/NDS/NES) dibuka lewat emulator eksternal yang terpasang. Untuk NES, TazPlay mencoba NES.emu, Lemuroid, lalu RetroArch; jika tidak ada yang cocok, Android menampilkan pemilih app. **PS2 tetap eksternal, permanen** — tidak ada core libretro PS2 yang layak di Android.
 
 ## Cara build
 

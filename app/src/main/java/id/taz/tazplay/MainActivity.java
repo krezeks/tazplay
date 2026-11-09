@@ -31,27 +31,29 @@ import java.util.Map;
 /**
  * TazPlay — launcher game retro satu pintu.
  * Memindai folder ROM pilihan pengguna, mengelompokkan per sistem
- * (PS1/PS2/PSP/N64/NDS), lalu membuka game di emulator yang terpasang
+ * (PS1/PS2/PSP/N64/NDS/NES), lalu membuka game di emulator yang terpasang
  * lewat intent Android standar. Tidak ada core emulator di dalam app ini.
  */
 public class MainActivity extends Activity {
 
-    static final String[] SYSTEMS = {"PS1", "PS2", "PSP", "N64", "NDS", "Lainnya"};
+    static final String[] SYSTEMS = {"PS1", "PS2", "PSP", "N64", "NDS", "NES", "Lainnya"};
     static final Map<String, String> EMOJI = new HashMap<>();
     static final Map<String, Integer> BADGE = new HashMap<>();
     static final Map<String, String[]> EMULATORS = new HashMap<>();
     static {
         EMOJI.put("PS1", "\uD83D\uDCBF"); EMOJI.put("PS2", "\uD83C\uDFAE");
         EMOJI.put("PSP", "\uD83D\uDD79️"); EMOJI.put("N64", "\uD83E\uDDE9");
-        EMOJI.put("NDS", "✏️"); EMOJI.put("Lainnya", "❓");
+        EMOJI.put("NDS", "✏️"); EMOJI.put("NES", "👾"); EMOJI.put("Lainnya", "❓");
         BADGE.put("PS1", 0xFF58A6FF); BADGE.put("PS2", 0xFF7EE787);
         BADGE.put("PSP", 0xFFFFB454); BADGE.put("N64", 0xFFBC8CFF);
-        BADGE.put("NDS", 0xFFEF6461); BADGE.put("Lainnya", 0xFF9AA4B2);
+        BADGE.put("NDS", 0xFFEF6461); BADGE.put("NES", 0xFFE85D3F);
+        BADGE.put("Lainnya", 0xFF9AA4B2);
         EMULATORS.put("PS1", new String[]{"com.github.stenzek.duckstation", "com.retroarch.aarch64", "com.retroarch"});
         EMULATORS.put("PS2", new String[]{"xyz.aethersx2.android"});
         EMULATORS.put("PSP", new String[]{"org.ppsspp.ppsspp", "com.retroarch.aarch64", "com.retroarch"});
         EMULATORS.put("N64", new String[]{"org.mupen64plusae.v3.fzurita", "com.retroarch.aarch64", "com.retroarch"});
         EMULATORS.put("NDS", new String[]{"me.magnum.melonds", "com.dsemu.drastic", "com.retroarch.aarch64", "com.retroarch"});
+        EMULATORS.put("NES", new String[]{"com.explusalpha.NesEmu", "com.swordfish.lemuroid", "com.retroarch.aarch64", "com.retroarch"});
         EMULATORS.put("Lainnya", new String[]{});
     }
 
@@ -151,7 +153,7 @@ public class MainActivity extends Activity {
             scan();
         } else {
             statusTv.setText("Belum ada folder game. Tap \u201CPilih Folder Game\u201D, lalu arahkan ke folder berisi ROM-mu " +
-                    "(paling rapi: subfolder ps1 / ps2 / psp / n64 / nds). Tekan-tahan kartu game buat mengganti sistemnya.");
+                    "(paling rapi: subfolder ps1 / ps2 / psp / n64 / nds / nes). Tekan-tahan kartu game buat mengganti sistemnya.");
         }
     }
 
@@ -220,7 +222,7 @@ public class MainActivity extends Activity {
                 allGames.clear(); allGames.addAll(found);
                 adapter.refresh();
                 statusTv.setText(found.isEmpty()
-                        ? "Tidak ada file game yang dikenali di folder ini. Format yang didukung: .iso .chd .cso .pbp .cue .bin .img .z64 .n64 .v64 .nds"
+                        ? "Tidak ada file game yang dikenali di folder ini. Format yang didukung: .iso .chd .cso .pbp .cue .bin .img .z64 .n64 .v64 .nds .nes .unf .unif .fds"
                         : found.size() + " game ditemukan. Tap buat main, tekan-tahan buat mengganti sistem / membuka dengan pemilih.");
             });
         }).start();
@@ -256,9 +258,11 @@ public class MainActivity extends Activity {
         if (hasTok(f, "psp")) return "PSP";
         if (hasTok(f, "n64") || f.contains("nintendo 64")) return "N64";
         if (hasTok(f, "nds") || f.contains("nintendo ds")) return "NDS";
+        if (hasTok(f, "nes") || hasTok(f, "famicom") || f.contains("nintendo entertainment system")) return "NES";
         String n = fileName.toLowerCase(Locale.ROOT);
         if (n.endsWith(".z64") || n.endsWith(".n64") || n.endsWith(".v64")) return "N64";
         if (n.endsWith(".nds")) return "NDS";
+        if (n.endsWith(".nes") || n.endsWith(".unf") || n.endsWith(".unif") || n.endsWith(".fds")) return "NES";
         if (n.endsWith(".cso") || n.endsWith(".pbp")) return "PSP";
         if (n.endsWith(".cue") || n.endsWith(".bin") || n.endsWith(".img")) return "PS1";
         if (n.endsWith(".iso") || n.endsWith(".chd")) return "Lainnya";
@@ -300,9 +304,13 @@ public class MainActivity extends Activity {
     }
 
     private void assignSystem(Game g) {
+        CharSequence[] choices = new CharSequence[SYSTEMS.length + 2];
+        choices[0] = "Buka di emulator eksternal…";
+        for (int i = 0; i < SYSTEMS.length; i++) choices[i + 1] = SYSTEMS[i];
+        choices[choices.length - 1] = "Buka dengan pemilih…";
         new AlertDialog.Builder(this)
                 .setTitle(g.name + "\nSistem saat ini: " + g.system)
-                .setItems(new CharSequence[]{"Buka di emulator eksternal…", "PS1", "PS2", "PSP", "N64", "NDS", "Lainnya", "Buka dengan pemilih…"},
+                .setItems(choices,
                         (d, which) -> {
                             if (which == 0) {
                                 launch(g);

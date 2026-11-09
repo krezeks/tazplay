@@ -24,7 +24,7 @@ cp libpcsx_rearmed_libretro.so "$B/lib/arm64-v8a/"
 $BT/aapt2 compile --dir res -o "$B/compiled.zip"
 $BT/aapt2 link -o "$B/unsigned.apk" -I "$AJ" --manifest AndroidManifest.xml \
   -R "$B/compiled.zip" --java "$B/gen" --auto-add-overlay \
-  --min-sdk-version 26 --target-sdk-version 34 --version-code 5 --version-name 0.4.1
+  --min-sdk-version 26 --target-sdk-version 34 --version-code 6 --version-name 0.4.2
 
 # 3) kode Java -> dex
 RJ=$(find "$B/gen" -name 'R.java')
